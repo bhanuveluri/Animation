@@ -16,6 +16,12 @@
 #include <vtkPolyData.h>
 #include <vtkSTLReader.h>
 #include <QTimer>
+#include <vtkTextActor.h>
+#include <vtkTextProperty.h>
+#include <map>
+#include "MouseInteractorStyle.h"
+#include <vtkTextActor3D.h>
+
 
 class Renderer : public QObject
 {
@@ -27,15 +33,31 @@ public:
 
     VtkRendererWidget* GetVtkWidget() const;
 
-    void SetStlFilePath(const QString &file_path);
+    void AddActor(const QString &name, const QString &file_path);
+
+    void DeleteActor();
+
+    void OnMouseLeftButtonClicked(vtkSmartPointer<vtkActor> actor_);
+
+    void SetAnimation(bool option);
+
+signals:
+    void ContextMenuRequestedForRenderer(const QPoint &pos);
+
 private slots:
     void OnTimeOut();
+
+    void OnContextMenuRequested(const QPoint &pos);
+
 private:
     VtkRendererWidget* vtk_widget_;
     vtkSmartPointer<vtkRenderer> vtk_renderer_;
     vtkSmartPointer<vtkActor> actor_;
     float count_;
-
+    std::map< QString, vtkSmartPointer<vtkActor>> map_actors_;
+    vtkSmartPointer<vtkActor> picked_actor_;
+    QTimer* timer_;
+    vtkSmartPointer<vtkTextActor3D> text_actor_;
 };
 
 #endif // RENDERER_H

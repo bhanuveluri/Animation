@@ -2,5 +2,5 @@
 
 VtkRendererWidget::VtkRendererWidget()
 {
-
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
 }

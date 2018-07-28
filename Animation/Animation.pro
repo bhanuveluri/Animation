@@ -15,11 +15,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     Renderer.cpp \
-    VtkRendererWidget.cpp
+    VtkRendererWidget.cpp \
+    MenuBar.cpp \
+    ImportDialog.cpp \
+    ContextMenu.cpp \
+    MouseInteractorStyle.cpp
 
 HEADERS  += mainwindow.h \
     Renderer.h \
-    VtkRendererWidget.h
+    VtkRendererWidget.h \
+    MenuBar.h \
+    ImportDialog.h \
+    ContextMenu.h \
+    MouseInteractorStyle.h
 
 FORMS    +=
 
