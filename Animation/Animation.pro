@@ -170,3 +170,13 @@ DEPENDPATH += $$PWD/../../../../../usr/include/hdf5/serial
 
 
 
+
+unix:!macx: LIBS += -L$$PWD/../../NewParticleGenerator/Debug/ -lpargen
+
+INCLUDEPATH += $$PWD/../../NewParticleGenerator/Include
+DEPENDPATH += $$PWD/../../NewParticleGenerator/Include
+
+unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/cuda/lib64/ -lOpenCL
+
+INCLUDEPATH += $$PWD/../../../../../usr/local/cuda/include
+DEPENDPATH += $$PWD/../../../../../usr/local/cuda/include

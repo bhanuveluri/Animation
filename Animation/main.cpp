@@ -15,5 +15,3 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
-
-//return sqrt(pow(p2.x_ - p1.x_, 2) + pow(p2.y_ - p1.y_, 2) + pow(p2.z_ - p1.z_, 2));

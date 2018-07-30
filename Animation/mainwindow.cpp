@@ -52,12 +52,15 @@ void MainWindow::AddContextMenu()
     context_menu_->AddTransformAction();
     context_menu_->AddDeleteAction();
     context_menu_->AddAnimateAction();
+    context_menu_->AddToParticleAction();
 
     connect(context_menu_->delete_action_, &QAction::triggered, [this]() {
         renderer_->DeleteActor();
     });
 
     connect(context_menu_->animate_action_, &QAction::triggered, this, &MainWindow::OnAnimateActionTriggered);
+    connect(context_menu_->to_particles_, &QAction::triggered, this, &MainWindow::OnToParticleActionTriggered);
+
 }
 
 void MainWindow::CreateConnections()
@@ -86,4 +89,10 @@ void MainWindow::OnAnimateActionTriggered()
     static bool option = false;
     option = !option;
     renderer_->SetAnimation(option);
+}
+
+void MainWindow::OnToParticleActionTriggered()
+{
+    //std::vector<std::unique_ptr<MeshObject>> mesh_objs;
+   //ObjectsVolumeGenerator volume(0, 0, mesh_objs, 0.1);
 }

@@ -14,10 +14,13 @@ public:
 
     void AddAnimateAction();
 
+    void AddToParticleAction();
+
 public:
     QAction* transform_action_;
     QAction* delete_action_;
     QAction* animate_action_;
+    QAction* to_particles_;
 
 };
 

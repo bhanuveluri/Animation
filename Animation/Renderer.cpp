@@ -76,6 +76,20 @@ void Renderer::DeleteActor()
         }
     }
     map_actors_.erase(key);
+    if(map_actors_.size() == 0)
+    {
+        // Setup the text and add it to the renderer
+       text_actor_ = vtkSmartPointer<vtkTextActor3D>::New();
+       text_actor_->SetInput ( "WELCOME TO ESS INDIA" );
+       text_actor_->SetPosition(0.0, 0.0, 0.0 );
+       text_actor_->GetTextProperty()->SetFontSize ( 24 );
+       text_actor_->GetTextProperty()->SetColor ( 1.0, 0.0, 0.0 );
+       vtk_renderer_->AddActor2D ( text_actor_ );
+       vtk_renderer_->ResetCamera();
+       vtk_widget_->update();
+       picked_actor_ = nullptr;
+
+    }
 }
 
 void Renderer::OnMouseLeftButtonClicked(vtkSmartPointer<vtkActor> actor)

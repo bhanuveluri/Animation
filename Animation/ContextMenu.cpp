@@ -20,3 +20,8 @@ void ContextMenu::AddAnimateAction()
 {
     animate_action_ = addAction("Animate");
 }
+
+void ContextMenu::AddToParticleAction()
+{
+    to_particles_ =  addAction("To Particles");
+}

@@ -7,6 +7,8 @@
 #include "Renderer.h"
 #include "MenuBar.h"
 #include "ContextMenu.h"
+#include "objects_volume_generator.hpp"
+#include "mesh_object.hpp"
 
 class MainWindow : public QMainWindow
 {
@@ -35,6 +37,7 @@ private slots:
 
     void OnAnimateActionTriggered();
 
+    void OnToParticleActionTriggered();
 
 private:
     QVBoxLayout* layout_;
