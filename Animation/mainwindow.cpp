@@ -60,7 +60,7 @@ void MainWindow::AddContextMenu()
 
     connect(context_menu_->animate_action_, &QAction::triggered, this, &MainWindow::OnAnimateActionTriggered);
     connect(context_menu_->to_particles_, &QAction::triggered, this, &MainWindow::OnToParticleActionTriggered);
-
+    connect(context_menu_->transform_action_, &QAction::triggered, this, &MainWindow::OnTransformActionTriggered);
 }
 
 void MainWindow::CreateConnections()
@@ -94,5 +94,15 @@ void MainWindow::OnAnimateActionTriggered()
 void MainWindow::OnToParticleActionTriggered()
 {
     //std::vector<std::unique_ptr<MeshObject>> mesh_objs;
-   //ObjectsVolumeGenerator volume(0, 0, mesh_objs, 0.1);
+    //ObjectsVolumeGenerator volume(0, 0, mesh_objs, 0.1);
+}
+
+void MainWindow::OnTransformActionTriggered()
+{
+    TransformDialog* dlg = new TransformDialog(this);
+    if(dlg->exec() == QDialog::Accepted)
+    {
+        renderer_->SetTranslation(dlg->GetPosX(), dlg->GetPosY(), dlg->GetPosZ());
+    }
+    dlg->deleteLater();
 }

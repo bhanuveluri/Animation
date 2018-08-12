@@ -25,7 +25,7 @@ void Renderer::InitRenderer()
     style->SetRenderer(this);
     vtk_widget_->GetInteractor()->SetInteractorStyle(style);
 
-     // Setup the text and add it to the renderer
+    // Setup the text and add it to the renderer
     text_actor_ = vtkSmartPointer<vtkTextActor3D>::New();
     text_actor_->SetInput ( "WELCOME TO ESS INDIA" );
     text_actor_->SetPosition(0.0, 0.0, 0.0 );
@@ -60,6 +60,12 @@ void Renderer::AddActor(const QString &name, const QString &file_path)
     vtk_renderer_->ResetCamera();
     vtk_widget_->update();
     map_actors_.insert({name, actor_});
+
+    Actors_Info* actor_info = new Actors_Info();
+    actor_info->name_ = name;
+    actor_info->actor_ = actor_;
+    actor_->GetProperty()->SetMaterialName(name.toStdString().c_str());
+    struct_map_actors_.insert({name, actor_info});
 }
 
 void Renderer::DeleteActor()
@@ -79,15 +85,15 @@ void Renderer::DeleteActor()
     if(map_actors_.size() == 0)
     {
         // Setup the text and add it to the renderer
-       text_actor_ = vtkSmartPointer<vtkTextActor3D>::New();
-       text_actor_->SetInput ( "WELCOME TO ESS INDIA" );
-       text_actor_->SetPosition(0.0, 0.0, 0.0 );
-       text_actor_->GetTextProperty()->SetFontSize ( 24 );
-       text_actor_->GetTextProperty()->SetColor ( 1.0, 0.0, 0.0 );
-       vtk_renderer_->AddActor2D ( text_actor_ );
-       vtk_renderer_->ResetCamera();
-       vtk_widget_->update();
-       picked_actor_ = nullptr;
+        text_actor_ = vtkSmartPointer<vtkTextActor3D>::New();
+        text_actor_->SetInput ( "WELCOME TO ESS INDIA" );
+        text_actor_->SetPosition(0.0, 0.0, 0.0 );
+        text_actor_->GetTextProperty()->SetFontSize ( 24 );
+        text_actor_->GetTextProperty()->SetColor ( 1.0, 0.0, 0.0 );
+        vtk_renderer_->AddActor2D ( text_actor_ );
+        vtk_renderer_->ResetCamera();
+        vtk_widget_->update();
+        picked_actor_ = nullptr;
 
     }
 }
@@ -95,6 +101,7 @@ void Renderer::DeleteActor()
 void Renderer::OnMouseLeftButtonClicked(vtkSmartPointer<vtkActor> actor)
 {
     picked_actor_ = actor;
+
 }
 
 void Renderer::SetAnimation(bool option)
@@ -106,18 +113,46 @@ void Renderer::SetAnimation(bool option)
     count_ = 0;
 }
 
+void Renderer::SetTranslation(float x, float y, float z)
+{
+    if(picked_actor_ != nullptr)
+    {
+        picked_actor_->SetPosition(x, y, z);
+    }
+}
+
 void Renderer::OnTimeOut()
 {
     count_ += 0.5;
-    if(picked_actor_ != nullptr)
-    {
-        //actor_->SetPosition(this->TimerCount, this->TimerCount,0);
-        picked_actor_->SetOrientation(0,0,0);
-        picked_actor_->RotateY(count_);
+    //    if(picked_actor_ != nullptr)
+    //    {
+    //        //actor_->SetPosition(this->TimerCount, this->TimerCount,0);
+    //        picked_actor_->SetOrientation(0,0,0);
+    //        picked_actor_->RotateY(count_);
 
-        text_actor_->SetOrientation(0,0,0);
-        text_actor_->RotateY(count_);
-        //actor_->SetPosition(count_, 0.0, 0.0);
+    //        text_actor_->SetOrientation(0,0,0);
+    //        text_actor_->RotateY(count_);
+
+    //        //actor_->SetPosition(count_, 0.0, 0.0);
+    //        vtk_widget_->update();
+    //    }
+
+    for(const auto& pair : struct_map_actors_)
+    {
+        Actors_Info* actor_info = pair.second;
+        if(actor_info->actor_ != nullptr)
+        {
+            if(picked_actor_ == actor_info->actor_)
+            {
+                actor_info->actor_->SetOrientation(0,0,0);
+                actor_info->actor_->RotateY(count_);
+            }
+            else
+            {
+                actor_info->actor_->SetOrientation(0,0,0);
+                actor_info->actor_->RotateY(-count_);
+            }
+        }
         vtk_widget_->update();
     }
 }

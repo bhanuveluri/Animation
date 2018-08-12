@@ -9,6 +9,7 @@
 #include "ContextMenu.h"
 #include "objects_volume_generator.hpp"
 #include "mesh_object.hpp"
+#include "TransformDialog.h"
 
 class MainWindow : public QMainWindow
 {
@@ -38,6 +39,8 @@ private slots:
     void OnAnimateActionTriggered();
 
     void OnToParticleActionTriggered();
+
+    void OnTransformActionTriggered();
 
 private:
     QVBoxLayout* layout_;

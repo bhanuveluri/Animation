@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     MenuBar.cpp \
     ImportDialog.cpp \
     ContextMenu.cpp \
-    MouseInteractorStyle.cpp
+    MouseInteractorStyle.cpp \
+    GearAnimationDialog.cpp \
+    TransformDialog.cpp
 
 HEADERS  += mainwindow.h \
     Renderer.h \
@@ -27,7 +29,9 @@ HEADERS  += mainwindow.h \
     MenuBar.h \
     ImportDialog.h \
     ContextMenu.h \
-    MouseInteractorStyle.h
+    MouseInteractorStyle.h \
+    GearAnimationDialog.h \
+    TransformDialog.h
 
 FORMS    +=
 

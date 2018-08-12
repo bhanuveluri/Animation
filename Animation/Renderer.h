@@ -21,6 +21,7 @@
 #include <map>
 #include "MouseInteractorStyle.h"
 #include <vtkTextActor3D.h>
+#include <vtkProperty.h>
 
 
 class Renderer : public QObject
@@ -41,6 +42,22 @@ public:
 
     void SetAnimation(bool option);
 
+    void SetTranslation(float x, float y, float z);
+
+    struct Actors_Info
+    {
+        QString name_;
+        vtkSmartPointer<vtkActor> actor_;
+        float rot_x_axis_;
+        float rot_y_axis_;
+        float rot_z_axis_;
+        Actors_Info()
+            : rot_x_axis_(0.0)
+            , rot_y_axis_(0.0)
+            , rot_z_axis_(0.0)
+        { }
+    };
+
 signals:
     void ContextMenuRequestedForRenderer(const QPoint &pos);
 
@@ -58,6 +75,7 @@ private:
     vtkSmartPointer<vtkActor> picked_actor_;
     QTimer* timer_;
     vtkSmartPointer<vtkTextActor3D> text_actor_;
+    std::map< QString, Actors_Info*> struct_map_actors_;
 };
 
 #endif // RENDERER_H
