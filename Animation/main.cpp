@@ -5,6 +5,22 @@
 #include <vtkKdTreePointLocator.h>
 
 
+#include <vtkVersion.h>
+#include <vtkActor.h>
+#include <vtkCamera.h>
+#include <vtkImageCanvasSource2D.h>
+#include <vtkImageActor.h>
+#include <vtkImageData.h>
+#include <vtkJPEGReader.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkSmartPointer.h>
+#include <vtkSuperquadricSource.h>
+
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -16,78 +32,119 @@ int main(int argc, char *argv[])
     w.show();
 
 
-    //    // Setup point coordinates
-    //      double x[3] = {1.0, 0.0, 0.0};
-    //      double y[3] = {0.0, 1.0, 0.0};
-    //      double z[3] = {0.0, 0.0, 1.0};
-
-    //    std::vector< double > x;
-    //    std::vector< double > y;
-    //    std::vector< double > z;
-
-    //    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-    //    //points->InsertNextPoint(x);
-    //    // points->InsertNextPoint(y);
-    //    //points->InsertNextPoint(z);
-
-    //    for(int i = 0; i < 1000; i++)
-    //    {
-    //        x.push_back(i);
-    //        y.push_back(i);
-    //        z.push_back(i);
-    //        points->InsertNextPoint(x[i], y[i], z[i]);
-    //    }
-
-    //    vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
-    //    polydata->SetPoints(points);
-
-    //    // Create the tree
-    //    vtkSmartPointer<vtkKdTreePointLocator> kDTree = vtkSmartPointer<vtkKdTreePointLocator>::New();
-    //    kDTree->SetDataSet(polydata);
-    //    kDTree->BuildLocator();
 
 
+//    vtkSmartPointer<vtkImageData> imageData;
 
-    //    // Find the k closest points to (0,0,0)
-    //    vtkIdType k = 1;
-    //    double testPoint[3] = {0.0, 0.0, 0.0};
-    //    vtkSmartPointer<vtkIdList> result = vtkSmartPointer<vtkIdList>::New();
+//      // Verify input arguments
+//      if ( argc > 1 )
+//        {
+//        //Read the image
+//        vtkSmartPointer<vtkPNGReader> png_reader = vtkSmartPointer<vtkPNGReader>::New();
+//        if( !png_reader->CanReadFile( "/home/ess-003/Animation/Animation/Animation/Images/ess_back.png")  )
+//          {
+//          std::cerr << "Error reading file " << argv[1] << std::endl;
+//          return EXIT_FAILURE;
+//          }
+//        png_reader->SetFileName ( "/home/ess-003/Animation/Animation/Animation/Images/ess_back.png" );
+//        png_reader->Update();
+//        imageData = png_reader->GetOutput();
+//        }
+//      else
+//        {
+//        vtkSmartPointer<vtkImageCanvasSource2D> canvasSource =
+//          vtkSmartPointer<vtkImageCanvasSource2D>::New();
+//        canvasSource->SetExtent(0, 100, 0, 100, 0, 0);
+//        canvasSource->SetScalarTypeToUnsignedChar();
+//        canvasSource->SetNumberOfScalarComponents(3);
+//        canvasSource->SetDrawColor(127, 127, 100);
+//        canvasSource->FillBox(0, 100, 0, 100);
+//        canvasSource->SetDrawColor(100, 255, 255);
+//        canvasSource->FillTriangle(10, 10, 25, 10, 25, 25);
+//        canvasSource->SetDrawColor(255, 100, 255);
+//        canvasSource->FillTube(75, 75, 0, 75, 5.0);
+//        canvasSource->Update();
+//        imageData = canvasSource->GetOutput();
+//        }
+//      // Create an image actor to display the image
+//      vtkSmartPointer<vtkImageActor> imageActor =
+//        vtkSmartPointer<vtkImageActor>::New();
+//    #if VTK_MAJOR_VERSION <= 5
+//      imageActor->SetInput(imageData);
+//    #else
+//      imageActor->SetInputData(imageData);
+//    #endif
 
-    //    kDTree->FindPointsWithinRadius(2.0, testPoint, result);
+//      // Create a renderer to display the image in the background
+//      vtkSmartPointer<vtkRenderer> backgroundRenderer =
+//        vtkSmartPointer<vtkRenderer>::New();
 
-    //    for(vtkIdType i = 0; i < result->GetNumberOfIds(); i++)
-    //    {
-    //        vtkIdType point_ind = result->GetId(i);
-    //        double p[3];
-    //        kDTree->GetDataSet()->GetPoint(point_ind, p);
-    //        std::cout << "Closest point " << i << ": Point "
-    //                  << point_ind << ": (" << p[0] << ", " << p[1] << ", " << p[2] << ")" << std::endl;
-    //    }
+//      // Create a superquadric
+//      vtkSmartPointer<vtkSuperquadricSource> superquadricSource =
+//        vtkSmartPointer<vtkSuperquadricSource>::New();
+//      superquadricSource->SetPhiRoundness(1.1);
+//      superquadricSource->SetThetaRoundness(.2);
 
+//      // Create a mapper and actor
+//      vtkSmartPointer<vtkPolyDataMapper> superquadricMapper =
+//        vtkSmartPointer<vtkPolyDataMapper>::New();
+//      superquadricMapper->SetInputConnection(superquadricSource->GetOutputPort());
 
+//      vtkSmartPointer<vtkActor> superquadricActor =
+//        vtkSmartPointer<vtkActor>::New();
+//      superquadricActor->SetMapper(superquadricMapper);
 
+//      vtkSmartPointer<vtkRenderer> sceneRenderer =
+//        vtkSmartPointer<vtkRenderer>::New();
 
+//      vtkSmartPointer<vtkRenderWindow> renderWindow =
+//        vtkSmartPointer<vtkRenderWindow>::New();
 
-    //    double testPoint[3] = {0.0, 0.0, 10.9};
+//      // Set up the render window and renderers such that there is
+//      // a background layer and a foreground layer
+//      backgroundRenderer->SetLayer(0);
+//      backgroundRenderer->InteractiveOff();
+//      sceneRenderer->SetLayer(1);
+//      renderWindow->SetNumberOfLayers(2);
+//      renderWindow->AddRenderer(backgroundRenderer);
+//      renderWindow->AddRenderer(sceneRenderer);
 
-    //    // Find the closest points to TestPoint
-    //    //vtkIdType iD = kDTree->FindClosestPoint(testPoint);
+//      vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
+//        vtkSmartPointer<vtkRenderWindowInteractor>::New();
+//      renderWindowInteractor->SetRenderWindow(renderWindow);
 
-    //    for(int i = 0; i < x.size(); i++)
-    //    {
-    //        double dist;
-    //        vtkIdList * list;
+//      // Add actors to the renderers
+//      sceneRenderer->AddActor(superquadricActor);
+//      backgroundRenderer->AddActor(imageActor);
 
-    //        vtkIdType iD = kDTree->FindClosestPointWithinRadius(100.5, testPoint, dist);
-    //        std::cout << "The closest point is point " << "iD" << "  dist  " << dist << std::endl;
+//      // Render once to figure out where the background camera will be
+//      renderWindow->Render();
 
-    //       // for(int j = 0; j < list->GetNumberOfIds(); j++)
-    //        //{
-    //            //Get the coordinates of the closest point
-    //            double closestPoint[3];
-    //            kDTree->GetDataSet()->GetPoint(list->GetId(j), closestPoint);
-    //            std::cout << "Coordinates: " << closestPoint[0] << " " << closestPoint[1] << " " << closestPoint[2] << std::endl;
-    //        //}
-    //    }
+//      // Set up the background camera to fill the renderer with the image
+//      double origin[3];
+//      double spacing[3];
+//      int extent[6];
+//      imageData->GetOrigin( origin );
+//      imageData->GetSpacing( spacing );
+//      imageData->GetExtent( extent );
+
+//      vtkCamera* camera = backgroundRenderer->GetActiveCamera();
+//      camera->ParallelProjectionOn();
+
+//      double xc = origin[0] + 0.5*(extent[0] + extent[1])*spacing[0];
+//      double yc = origin[1] + 0.5*(extent[2] + extent[3])*spacing[1];
+//      //double xd = (extent[1] - extent[0] + 1)*spacing[0];
+//      double yd = (extent[3] - extent[2] + 1)*spacing[1];
+//      double d = camera->GetDistance();
+//      camera->SetParallelScale(0.5*yd);
+//      camera->SetFocalPoint(xc,yc,0.0);
+//      camera->SetPosition(xc,yc,d);
+
+//      // Render again to set the correct view
+//      renderWindow->Render();
+
+//      // Interact with the window
+//      renderWindowInteractor->Start();
+
     return a.exec();
 }

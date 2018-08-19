@@ -10,6 +10,8 @@
 #include "objects_volume_generator.hpp"
 #include "mesh_object.hpp"
 #include "TransformDialog.h"
+#include "GearAnimationDialog.h"
+#include <QColorDialog>
 
 class MainWindow : public QMainWindow
 {
@@ -38,9 +40,11 @@ private slots:
 
     void OnAnimateActionTriggered();
 
-    void OnToParticleActionTriggered();
-
     void OnTransformActionTriggered();
+
+    void OnSetColorActionTriggrerd();
+
+    void OnSetOpacityActiuonTriggered();
 
 private:
     QVBoxLayout* layout_;

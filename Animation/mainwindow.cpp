@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ImportDialog.h"
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -50,17 +51,21 @@ void MainWindow::AddContextMenu()
 {
     context_menu_ = new ContextMenu(this);
     context_menu_->AddTransformAction();
-    context_menu_->AddDeleteAction();
     context_menu_->AddAnimateAction();
-    context_menu_->AddToParticleAction();
+    context_menu_->addSeparator();
+    context_menu_->AddSetColorAction();
+    context_menu_->AddSetOpacityAction();
+    context_menu_->addSeparator();
+    context_menu_->AddDeleteAction();
 
     connect(context_menu_->delete_action_, &QAction::triggered, [this]() {
         renderer_->DeleteActor();
     });
 
     connect(context_menu_->animate_action_, &QAction::triggered, this, &MainWindow::OnAnimateActionTriggered);
-    connect(context_menu_->to_particles_, &QAction::triggered, this, &MainWindow::OnToParticleActionTriggered);
     connect(context_menu_->transform_action_, &QAction::triggered, this, &MainWindow::OnTransformActionTriggered);
+    connect(context_menu_->set_color_action_, &QAction::triggered, this, &MainWindow::OnSetColorActionTriggrerd);
+    connect(context_menu_->set_opacity_, &QAction::triggered, this, &MainWindow::OnSetOpacityActiuonTriggered);
 }
 
 void MainWindow::CreateConnections()
@@ -86,15 +91,17 @@ void MainWindow::OnContextMenuRequested(const QPoint &pos)
 
 void MainWindow::OnAnimateActionTriggered()
 {
-    static bool option = false;
-    option = !option;
-    renderer_->SetAnimation(option);
-}
-
-void MainWindow::OnToParticleActionTriggered()
-{
-    //std::vector<std::unique_ptr<MeshObject>> mesh_objs;
-    //ObjectsVolumeGenerator volume(0, 0, mesh_objs, 0.1);
+    GearAnimationDialog* dlg = new GearAnimationDialog();
+    //static bool option = false;
+    //option = !option;
+    //if(option)
+    {
+        if(dlg->exec() == QDialog::Accepted)
+        {
+            renderer_->SetAnimation(true, dlg->GetSpeed(), dlg->GetRotX(), dlg->GetRotY(), dlg->GetRotZ());
+        }
+    }
+    dlg->deleteLater();
 }
 
 void MainWindow::OnTransformActionTriggered()
@@ -103,6 +110,57 @@ void MainWindow::OnTransformActionTriggered()
     if(dlg->exec() == QDialog::Accepted)
     {
         renderer_->SetTranslation(dlg->GetPosX(), dlg->GetPosY(), dlg->GetPosZ());
+    }
+    dlg->deleteLater();
+}
+
+void MainWindow::OnSetColorActionTriggrerd()
+{
+    QColorDialog color_dialog;
+    if(color_dialog.exec() == QColorDialog::Accepted)
+    {
+        QColor slected_color = color_dialog.selectedColor();
+        renderer_->SetColor(slected_color.redF(), slected_color.greenF(), slected_color.blueF());
+    }
+}
+
+void MainWindow::OnSetOpacityActiuonTriggered()
+{
+    QDialog* dlg = new QDialog();
+    QFormLayout* layout = new QFormLayout();
+    QRegExp reg1("[0-9.]+");
+    QValidator* val = new QRegExpValidator(reg1, this);
+
+    QLineEdit* opacity_line_edit = new QLineEdit("0.5");
+    opacity_line_edit->setValidator(val);
+
+    layout->addRow("Opcaity :", opacity_line_edit);
+
+    QHBoxLayout* h_layout = new QHBoxLayout();
+    QPushButton* ok_button = new QPushButton("Ok", this);
+    QPushButton* cancel_button = new QPushButton("Cancel", this);
+
+    connect(ok_button, &QPushButton::clicked, dlg,  &QDialog::accept);
+    connect(cancel_button, &QPushButton::clicked, dlg,  &QDialog::reject);
+
+    connect(opacity_line_edit, &QLineEdit::textChanged, [this, ok_button, opacity_line_edit]() {
+        ok_button->setDisabled(false);
+        if(opacity_line_edit->text().toFloat() <= 0)
+            ok_button->setDisabled(true);
+    });
+
+    h_layout->addSpacerItem(new QSpacerItem(10, 10, QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
+    h_layout->addWidget(ok_button);
+    h_layout->addWidget(cancel_button);
+
+    QVBoxLayout* v_layout = new QVBoxLayout();
+    v_layout->addLayout(layout);
+    v_layout->addLayout(h_layout);
+
+    dlg->setLayout(v_layout);
+    if(dlg->exec() == QDialog::Accepted)
+    {
+        renderer_->SetOpacity(opacity_line_edit->text().toFloat());
     }
     dlg->deleteLater();
 }

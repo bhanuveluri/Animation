@@ -18,10 +18,20 @@ void ContextMenu::AddDeleteAction()
 
 void ContextMenu::AddAnimateAction()
 {
-    animate_action_ = addAction("Animate");
+    animate_action_ = addAction("Start Animation");
 }
 
 void ContextMenu::AddToParticleAction()
 {
     to_particles_ =  addAction("To Particles");
+}
+
+void ContextMenu::AddSetColorAction()
+{
+    set_color_action_ = addAction("Set Color");
+}
+
+void ContextMenu::AddSetOpacityAction()
+{
+    set_opacity_ = addAction("Set Opacity");
 }
